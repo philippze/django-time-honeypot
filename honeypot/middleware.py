@@ -21,7 +21,7 @@ class HoneypotViewMiddleware(object):
         Middleware that verifies a valid honeypot on all non-ajax POSTs.
     """
     def process_view(self, request, callback, callback_args, callback_kwargs):
-        if request.is_ajax():
+        if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
             return None
         if getattr(callback, 'honeypot_exempt', False):
             return None
