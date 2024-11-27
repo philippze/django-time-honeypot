@@ -4,9 +4,9 @@ from django.utils.deprecation import MiddlewareMixin
 from django.template.loader import render_to_string
 from django.conf import settings
 try:
-    from django.utils.encoding import force_text
+    from django.utils.encoding import force_str
 except ImportError:
-    from django.utils.encoding import force_unicode as force_text
+    from django.utils.encoding import force_unicode as force_str
 from honeypot.decorators import verify_honeypot_value
 import datetime
 
@@ -51,7 +51,7 @@ class HoneypotResponseMiddleware(object):
                 )
 
             # Modify any POST forms
-            response.content = _POST_FORM_RE.sub(add_honeypot_field, force_text(response.content))
+            response.content = _POST_FORM_RE.sub(add_honeypot_field, force_str(response.content))
         return response
 
 
