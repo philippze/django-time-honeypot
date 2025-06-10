@@ -37,6 +37,8 @@ class HoneypotResponseMiddleware(object):
         Borrows heavily from pre-Django 1.2 django.contrib.csrf.middleware.CsrfResponseMiddleware.
     """
     def process_response(self, request, response):
+        if request.user.is_authenticated:
+            return response
         try:
             content_type = response['Content-Type'].split(';')[0]
         except (KeyError, AttributeError):
