@@ -23,7 +23,7 @@ class HoneypotViewMiddleware(object):
     def process_view(self, request, callback, callback_args, callback_kwargs):
         # if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         #     return None
-        if request.user.is_authenticated:
+        if request.user and request.user.is_authenticated:
             return None
         if getattr(callback, 'honeypot_exempt', False):
             return None
@@ -37,7 +37,7 @@ class HoneypotResponseMiddleware(object):
         Borrows heavily from pre-Django 1.2 django.contrib.csrf.middleware.CsrfResponseMiddleware.
     """
     def process_response(self, request, response):
-        if request.user.is_authenticated:
+        if request.user and request.user.is_authenticated:
             return response
         try:
             content_type = response['Content-Type'].split(';')[0]
